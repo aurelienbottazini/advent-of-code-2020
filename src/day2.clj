@@ -18,3 +18,11 @@
 
 (count (filter identity (map check-password example)))
 (count (filter identity (map check-password passwords-with-policies)))
+
+(defn check-password-new-policy [password-with-policy]
+  (let [[[first second] char password] password-with-policy]
+    (= 1 (count (filter identity (list (= (get char 0) (get password (- first 1)))
+                                       (= (get char 0) (get password (- second 1)))))))))
+
+(count (filter identity (map check-password-new-policy example)))
+(count (filter identity (map check-password-new-policy passwords-with-policies)))
