@@ -24,5 +24,8 @@
 
 (apply max (map seat-id seats))
 
-
-
+(loop [seat-ids (sort (map seat-id seats))]
+  (cond
+    (< (count seat-ids) 2) :not_found
+    (= (first seat-ids) (- (first (rest seat-ids)) 2)) (+ 1 (first seat-ids))
+    :else (recur (rest seat-ids))))
