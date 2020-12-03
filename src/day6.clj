@@ -18,10 +18,11 @@ b" #"\n\n"))
 
 (def scores (clojure.string/split (slurp "./src/day6.input.txt") #"\n\n"))
 
-(defn group-score [group]
-  (count
-   (reduce clojure.set/union
-           (map set (clojure.string/split-lines group)))))
+(defn group-score [group step]
+  (count (reduce step (map set (clojure.string/split-lines group)))))
 
-(apply + (map group-score example))
-(apply + (map group-score scores))
+(apply + (map #(group-score % clojure.set/union) example))
+(apply + (map #(group-score % clojure.set/union) scores))
+
+(apply + (map #(group-score % clojure.set/intersection) example))
+(apply + (map #(group-score % clojure.set/intersection) scores))
