@@ -13,25 +13,30 @@
 #...##....#
 .#..#...#.#"))
 
-(def map (split-lines
+(def area-map (split-lines
  (slurp "./src/day3.input.txt")))
-
-(def moves {:right 3 :down 1})
-
-(defn slide-toboggan [map number-of-trees number-of-steps]
-  (cond
-    (empty? map) number-of-trees
-    :else (if (= \# (square (first map) (:right moves) number-of-steps))
-            (recur (move-map (:down moves) map) (+ 1 number-of-trees) (+ 1 number-of-steps))
-            (recur (move-map (:down moves) map) number-of-trees (+ 1 number-of-steps)))))
-
-(defn move-map [move-down map]
-  (drop move-down map))
 
 (defn square [line move-right number-of-steps]
   (if (<= (count line) (* move-right number-of-steps))
     (recur (str line line) move-right number-of-steps)
     (get line (* move-right number-of-steps))))
 
-(slide-toboggan example 0 0)
-(slide-toboggan map 0 0)
+(defn move-map [move-down area-map]
+  (drop move-down area-map))
+
+(defn slide-toboggan [area-map number-of-trees number-of-steps moves]
+  (cond
+    (empty? area-map) number-of-trees
+    :else (if (= \# (square (first area-map) (:right moves) number-of-steps))
+            (recur (move-map (:down moves) area-map) (+ 1 number-of-trees) (+ 1 number-of-steps) moves)
+            (recur (move-map (:down moves) area-map) number-of-trees (+ 1 number-of-steps) moves))))
+
+(slide-toboggan example 0 0 {:right 3 :down 1})
+(slide-toboggan area-map 0 0 {:right 3 :down 1})
+
+(apply * (map #(slide-toboggan area-map 0 0 %)
+              '({:right 1 :down 1}
+                {:right 3 :down 1}
+                {:right 5 :down 1}
+                {:right 7 :down 1}
+                {:right 1 :down 2})))
