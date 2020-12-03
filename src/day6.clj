@@ -21,8 +21,10 @@ b" #"\n\n"))
 (defn group-score [group step]
   (count (reduce step (map set (clojure.string/split-lines group)))))
 
+;; part 1
 (apply + (map #(group-score % clojure.set/union) example))
 (apply + (map #(group-score % clojure.set/union) scores))
 
+;; part 2
 (apply + (map #(group-score % clojure.set/intersection) example))
 (apply + (map #(group-score % clojure.set/intersection) scores))
