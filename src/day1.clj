@@ -15,7 +15,10 @@
 ;; part two
 (apply * (first (filter #(= 2020 (apply + %))
                         (combo/combinations example 3))))
+
 (apply * (first (filter #(= 2020 (apply + %))
                         (combo/combinations expenses 3))))
 
-
+;; or with core librairies only
+(apply * (first (filter #(= 2020 (apply + %))
+                        (for [x expenses y expenses z expenses] (vector x y z))))))
