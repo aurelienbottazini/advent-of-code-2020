@@ -36,3 +36,13 @@ dotted black bags contain no other bags."))
 (count
  (bags-for-color '("shiny gold") rules))
 
+(defn number-of-bags-for-color [rules color]
+  (let [bags-for-color (get (bag-lists rules) color)]
+    (cond
+      (empty? bags-for-color) 0
+      :else (reduce + (vals bags-for-color))))
+  )
+
+(number-of-bags-for-color example "shiny gold")
+
+
