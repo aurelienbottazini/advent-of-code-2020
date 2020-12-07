@@ -10,6 +10,14 @@ vibrant plum bags contain 5 faded blue bags, 6 dotted black bags.
 faded blue bags contain no other bags.
 dotted black bags contain no other bags."))
 
+(def example2 (clojure.string/split-lines "shiny gold bags contain 2 dark red bags.
+dark red bags contain 2 dark orange bags.
+dark orange bags contain 2 dark yellow bags.
+dark yellow bags contain 2 dark green bags.
+dark green bags contain 2 dark blue bags.
+dark blue bags contain 2 dark violet bags.
+dark violet bags contain no other bags."))
+
 (def rules (clojure.string/split-lines (slurp "./src/day7.input.txt")))
 
 (defn bag-lists [input]
@@ -33,16 +41,17 @@ dotted black bags contain no other bags."))
             (conj processed (first colors))
             (into result (direct-bags input (first colors)))))))
 
-(count
- (bags-for-color '("shiny gold") rules))
+(count (bags-for-color '("shiny gold") example))
+(count (bags-for-color '("shiny gold") rules))
 
 (defn number-of-bags-for-color [rules color]
-  (let [bags-for-color (get (bag-lists rules) color)]
+  (let [bags (get (bag-lists rules) color)]
     (cond
-      (empty? bags-for-color) 0
-      :else (reduce + (vals bags-for-color))))
-  )
+      (empty? bags) 1
+      :else (+ 1 (reduce + (map #(* (nth % 1)
+                               (number-of-bags-for-color rules (nth % 0))) bags))))))
 
-(number-of-bags-for-color example "shiny gold")
-
+(- (number-of-bags-for-color example "shiny gold") 1)
+(- (number-of-bags-for-color example2 "shiny gold") 1)
+(- (number-of-bags-for-color rules "shiny gold") 1)
 
