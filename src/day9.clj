@@ -7,10 +7,6 @@
 (def example (parse "./src/day9.example.txt"))
 (def input (parse "./src/day9.input.txt"))
 
-(defn preamble
-  ([coll] (preamble coll 25))
-  ([coll n] (take n coll)))
-
 (defn combo-sums [coll]
   (map #(apply + %) (combo/combinations coll 2)))
 
