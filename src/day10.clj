@@ -31,12 +31,12 @@
 (def distinct-arrangements
   (memoize
    (fn
-     ([jolt-differences] 1)
-     ([jolt-differences y & zs]
-      (if (> (+ jolt-differences y) 3)
-        (apply distinct-arrangements y zs)
-        (+ (apply distinct-arrangements y zs)
-           (apply distinct-arrangements (+ jolt-differences y) zs)))))))
+     ([_] 1)
+     ([x y & xs]
+      (if (> (+ x y) 3)
+        (apply distinct-arrangements y xs)
+        (+ (apply distinct-arrangements y xs)
+           (apply distinct-arrangements (+ x y) xs)))))))
 
 (time
  (apply distinct-arrangements (differences (joltages input))))
