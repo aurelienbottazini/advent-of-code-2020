@@ -18,7 +18,7 @@
         next-joltage (first (rest coll))]
     (cond
       (nil? next-joltage) nil
-      :else (conj  (differences (rest coll)) (- next-joltage joltage)))))
+      :else (conj (differences (rest coll)) (- next-joltage joltage)))))
 
 (time
  (let [all-joltages (joltages input)
@@ -28,4 +28,16 @@
 
 ;; part 2
 
+(def distinct-arrangements
+  (memoize
+   (fn
+     ([jolt-differences] 1)
+     ([jolt-differences y & zs]
+      (if (> (+ jolt-differences y) 3)
+        (apply distinct-arrangements y zs)
+        (+ (apply distinct-arrangements y zs)
+           (apply distinct-arrangements (+ jolt-differences y) zs)))))))
+
+(time
+ (apply distinct-arrangements (differences (joltages input))))
 
