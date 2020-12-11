@@ -20,56 +20,12 @@
       (nil? next-joltage) nil
       :else (conj  (differences (rest coll)) (- next-joltage joltage)))))
 
-(let [all-joltages (joltages input)]
-  (* (count (filter #(= 1 %) (differences all-joltages)))
-     (count (filter #(= 3 %) (differences all-joltages)))))
+(time
+ (let [all-joltages (joltages input)
+       jolt-diffs (differences all-joltages)]
+   (* (count (filter #(= 1 %) jolt-diffs))
+      (count (filter #(= 3 %) jolt-diffs)))))
 
-(joltages example)
-(prn
- (differences (joltages example))
- )
+;; part 2
 
-(defn max-3 [coll]
-  )
-
-  (= '(3 3) '(1 3))
-
-(max-3 '(1 3))
-(max-3 '(1 1 1))
-
-(max-3 '(3 1 1))
-;; (1 3 1 1 1 3 1 1 3 1 3 3)
-
-;; (1 3) => 1
-;; (1 1 1) => 3
-;; (3 1 1) => 2
-;; (3 1) => 1
-;; (1 3) => 1
-;; (3 3) => 1
-
-(1,1,1) => 3
-(3,1,1) => 2
-
-(1 3 1) => 1
-(3,1,3) => 1
-(1,3,1) => 1
-(3,3,1) => 1
-
-;; ()        (1)
-;; (1,3)
-;;            (1,3,1)
-;;                             (1,1)
-;; (0), 1,    4, 5,            6, 7, 10, 11, 12, 15, 16, 19, (22)
-;; (0), 1,    4, 5,            6, 7, 10, 12, 15, 16, 19, (22)
-;;                             (1,3)
-;; (0), 1,    4, 5,            7, 10, 11, 12, 15, 16, 19, (22)
-;; (0), 1,    4, 5,            7, 10, 12, 15, 16, 19, (22)
-
-;;            (1,3,1,1)
-;; (0), 1,    4, 6,            7, 10, 11, 12, 15, 16, 19, (22)
-;; (0), 1,    4, 6,            7, 10, 12, 15, 16, 19, (22)
-
-;;            (1,3,1,1,1)
-;; (0), 1,    4, 7,            10, 11, 12, 15, 16, 19, (22)
-;; (0), 1,    4, 7,            10, 12, 15, 16, 19, (22)
 
