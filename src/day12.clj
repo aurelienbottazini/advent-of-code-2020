@@ -36,8 +36,51 @@
     (empty? coll) position
     :else (recur (rest coll) (move (first coll) position))))
 
-(let [position (navigate input start-position)]
-  (+ (Math/abs (- (get position "S")
-                  (get position "N")))
-     (Math/abs (- (get position "E")
-                  (get position "W")))))
+(time
+ (let [position (navigate input start-position)]
+   (+ (Math/abs (- (get position "S")
+                   (get position "N")))
+      (Math/abs (- (get position "E")
+                   (get position "W"))))))
+
+(def waypoint-position
+  {:x -10 :y 1})
+
+(defn rotate-left [{:keys [x y] :as waypoint} a]
+  (case (quot a 90)
+    0 waypoint
+    1 {:x (- y) :y x}
+    2 {:x (- x) :y (- y)}
+    3 {:x y     :y (- x)}))
+
+(defn rotate-right [{:keys [x y] :as waypoint} a]
+  (case (quot a 90)
+    0 waypoint
+    1 {:x y :y (- x)}
+    2 {:x (- x) :y (- y)}
+    3 {:x (- y) :y x}))
+
+(defn move-ship [{sx :x sy :y} {wx :x wy :y} val]
+  {:x (+ sx (* val wx))
+   :y (+ sy (* val wy))})
+
+(defn move-2 [[direction val] waypoint ship]
+  (cond
+    (= direction "F") [waypoint (move-ship ship waypoint val)]
+    (= direction "N") [(update-in waypoint [:y] + val) ship]
+    (= direction "S") [(update-in waypoint [:y] - val) ship]
+    (= direction "E") [(update-in waypoint [:x] + val) ship]
+    (= direction "W") [(update-in waypoint [:x] - val) ship]
+    (= direction "L") [(rotate-left waypoint val) ship]
+    (= direction "R") [(rotate-right waypoint val) ship]
+    :else (println direction val)))
+
+(defn navigate-2 [coll position waypoint]
+  (cond
+    (empty? coll) position
+    :else (let [[nw np] (move-2 (first coll) waypoint position)]
+            (recur (rest coll) np nw))))
+
+(let [{:keys [x y]} (navigate-2 input {:x 0 :y 0} {:x 10 :y 1})]
+  (+ (Math/abs x) (Math/abs y)))
+
