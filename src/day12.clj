@@ -81,6 +81,7 @@
     :else (let [[nw np] (move-2 (first coll) waypoint position)]
             (recur (rest coll) np nw))))
 
-(let [{:keys [x y]} (navigate-2 input {:x 0 :y 0} {:x 10 :y 1})]
-  (+ (Math/abs x) (Math/abs y)))
+(time
+ (let [{:keys [x y]} (navigate-2 input {:x 0 :y 0} {:x 10 :y 1})]
+   (+ (Math/abs x) (Math/abs y))))
 
